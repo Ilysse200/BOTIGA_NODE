@@ -14,3 +14,49 @@ export const CreateContact=async(req, res) =>{
 
     }
 }
+
+export const getAllContact=async(req, res)=>{
+    try{
+        const contacts = await Contact.find();
+        res.status(200).json({success:true, contacts});
+    }
+    catch(error){
+        res.status(500).json({success:false,message:"Server error", error:error.message });
+
+    }
+}
+export const getContactById=async(req, res)=>{
+    try{
+        const {id} = req.params; 
+
+         // Check if ID is provided
+        //  if (!contactId) {
+        //     return res.status(400).json({ success: false, message: "Contact ID is required" });
+        // }
+        // FIND CONTACT BY Id
+        const contacts = await Contact.findById(id);
+        if(!contacts){
+            return res.status(400).json({ success: false, message: "Contact not found" });
+        }
+        res.status(200).json({success:true, contacts})
+    }
+    catch(error){
+        res.status(500).json({success:false,message:"Server error", error:error.message });
+    }
+}
+
+export const deleteContactById = async (req, res) => {
+    try {
+        const contactId = req.params.id; 
+
+        const deletedContact = await Contact.findByIdAndDelete(contactId);
+        
+        if (!deletedContact) {
+            return res.status(404).json({ success: false, message: "Contact not found" });
+        }
+
+        res.status(200).json({ success: true, message: "Contact deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};

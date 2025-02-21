@@ -11,7 +11,9 @@ const port = process.env.PORT || 3000;
 const db_pass = process.env.DB_PASS;
 
 const app = express();
+app.use(express.json());
 app.use('/',mainRouter);
+
 
 //copied codes
 const dbUri = `mongodb+srv://${db_user}:${db_pass}@cluster0.xstok.mongodb.net/${db_name}`;
